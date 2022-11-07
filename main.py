@@ -61,6 +61,7 @@ def main():
             'area': '1',
             'period': '30',
             'only_with_salary': True,
+            'per_page': 100,
         }
         response = get_response(url, payload)
         response = response.json()
@@ -68,10 +69,18 @@ def main():
         average_salary = 0
         vacancies_processed = 0
 
-        for i in response['items']:
-            if predict_rub_salary(i['salary']):
-                average_salary += predict_rub_salary(i['salary'])
-                vacancies_processed += 1
+        pages = response['pages']
+
+        for page in range(pages):
+            payload['page'] = page
+
+            response = get_response(url, payload)
+            response = response.json()
+        
+            for item in response['items']:
+                if predict_rub_salary(item['salary']):
+                    average_salary += predict_rub_salary(item['salary'])
+                    vacancies_processed += 1
         
         average_salary = int(average_salary / vacancies_processed)
         vacancies_found = response['found']
@@ -79,7 +88,7 @@ def main():
         language_statistics = {
                 "vacancies_found": vacancies_found,
                 "vacancies_processed": vacancies_processed,
-                "average_salary": average_salary
+                "average_salary": average_salary,
             }
         
         salary_statistics[language] = language_statistics
