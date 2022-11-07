@@ -7,6 +7,18 @@ import requests
 
 BASE_URL = 'https://api.hh.ru'
 
+POPULAR_PROGRAMMING_LANGUAGES = [
+        'Go',
+        'C',
+        'C#',
+        'C++',
+        'PHP',
+        'Ruby',
+        'Python',
+        'Java',
+        'JavaScript'
+    ]
+
 
 def predict_rub_salary(vacancy):
     if vacancy['currency'] == 'RUR':
@@ -28,52 +40,52 @@ def predict_rub_salary(vacancy):
     return None
 
 
+def get_response(url, payload=None):
+    response = requests.get(url, params=payload)
+    response.raise_for_status()
+
+    return response
+
+
 def main():
     work = 'vacancies'
 
     url = urljoin(BASE_URL, work)
 
-    popular_programming_languages = [
-        'Go',
-        'C',
-        'C#',
-        'C++',
-        'PHP',
-        'Ruby',
-        'Python',
-        'Java',
-        'JavaScript'
-    ]
+    salary_statistics = {}
 
-    found_vacancys = {}
-
-    for language in popular_programming_languages:
-
+    for language in POPULAR_PROGRAMMING_LANGUAGES:
         vacancy = f'Программист {language}'
-
         payload = {
             'text': vacancy,
             'area': '1',
             'period': '30',
             'only_with_salary': True,
         }
+        response = get_response(url, payload)
+        response = response.json()
 
-        response = requests.get(url, params=payload)
-        response.raise_for_status()
+        average_salary = 0
+        vacancies_processed = 0
 
-        x = response.json()
+        for i in response['items']:
+            if predict_rub_salary(i['salary']):
+                average_salary += predict_rub_salary(i['salary'])
+                vacancies_processed += 1
+        
+        average_salary = int(average_salary / vacancies_processed)
+        vacancies_found = response['found']
 
-        found_vacancys[language] = x['found']
+        language_statistics = {
+                "vacancies_found": vacancies_found,
+                "vacancies_processed": vacancies_processed,
+                "average_salary": average_salary
+            }
+        
+        salary_statistics[language] = language_statistics
 
-        if language == 'Python':
-            for i in x['items']:
-                print(i['salary'])
-                print(predict_rub_salary(i['salary']))
 
-    print(found_vacancys)
-
-    with open('works.json', "w", encoding='utf-8') as file:
-        json.dump(response.json(), file, indent=7, ensure_ascii=False)
+    print(salary_statistics)
 
 
 if __name__ == '__main__':
