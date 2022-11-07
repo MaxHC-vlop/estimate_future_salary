@@ -322,6 +322,99 @@
                      "accept_temporary": false
               },
               {
+                     "id": "72035641",
+                     "premium": false,
+                     "name": "Frontend-разработчик (Junior+, ES6+, ES5+jQuery)",
+                     "department": null,
+                     "has_test": false,
+                     "response_letter_required": false,
+                     "area": {
+                            "id": "1",
+                            "name": "Москва",
+                            "url": "https://api.hh.ru/areas/1"
+                     },
+                     "salary": {
+                            "from": 60000,
+                            "to": 100000,
+                            "currency": "RUR",
+                            "gross": false
+                     },
+                     "type": {
+                            "id": "open",
+                            "name": "Открытая"
+                     },
+                     "address": {
+                            "city": "Москва",
+                            "street": "Бережковская набережная",
+                            "building": "16к2",
+                            "description": null,
+                            "lat": 55.73739,
+                            "lng": 37.561526,
+                            "raw": "Москва, Бережковская набережная, 16к2",
+                            "metro": {
+                                   "station_name": "Киевская",
+                                   "line_name": "Арбатско-Покровская",
+                                   "station_id": "3.47",
+                                   "line_id": "3",
+                                   "lat": 55.743117,
+                                   "lng": 37.564132
+                            },
+                            "metro_stations": [
+                                   {
+                                          "station_name": "Киевская",
+                                          "line_name": "Арбатско-Покровская",
+                                          "station_id": "3.47",
+                                          "line_id": "3",
+                                          "lat": 55.743117,
+                                          "lng": 37.564132
+                                   }
+                            ],
+                            "id": "5404971"
+                     },
+                     "response_url": null,
+                     "sort_point_distance": null,
+                     "published_at": "2022-11-07T19:44:45+0300",
+                     "created_at": "2022-11-07T19:44:45+0300",
+                     "archived": false,
+                     "apply_alternate_url": "https://hh.ru/applicant/vacancy_response?vacancyId=72035641",
+                     "insider_interview": null,
+                     "url": "https://api.hh.ru/vacancies/72035641?host=hh.ru",
+                     "adv_response_url": "https://api.hh.ru/vacancies/72035641/adv_response?host=hh.ru",
+                     "alternate_url": "https://hh.ru/vacancy/72035641",
+                     "relations": [],
+                     "employer": {
+                            "id": "5270496",
+                            "name": "Айнэт Продакшен",
+                            "url": "https://api.hh.ru/employers/5270496",
+                            "alternate_url": "https://hh.ru/employer/5270496",
+                            "logo_urls": {
+                                   "90": "https://hhcdn.ru/employer-logo/3745751.png",
+                                   "240": "https://hhcdn.ru/employer-logo/3745752.png",
+                                   "original": "https://hhcdn.ru/employer-logo-original/826216.png"
+                            },
+                            "vacancies_url": "https://api.hh.ru/vacancies?employer_id=5270496",
+                            "trusted": true
+                     },
+                     "snippet": {
+                            "requirement": "Опыт коммерческой разработки от 6 месяцев. Отличное знание HTML5, CSS (SCSS), <highlighttext>JS</highlighttext> ES7+. Опыт работы с vue...",
+                            "responsibility": "Поддержка существующих проектов (Vue, ES6+, ES5+jQuery). Рефакторинг legacy-кода. Разработка новых проектов (порталы, лендинги, промо-проекты..."
+                     },
+                     "contacts": null,
+                     "schedule": {
+                            "id": "remote",
+                            "name": "Удаленная работа"
+                     },
+                     "working_days": [],
+                     "working_time_intervals": [],
+                     "working_time_modes": [
+                            {
+                                   "id": "start_after_sixteen",
+                                   "name": "Можно начинать работать после 16:00"
+                            }
+                     ],
+                     "accept_temporary": true
+              },
+              {
                      "id": "71998560",
                      "premium": false,
                      "name": "Fullstack Node.js Developer",
@@ -1414,74 +1507,13 @@
                      "working_time_intervals": [],
                      "working_time_modes": [],
                      "accept_temporary": true
-              },
-              {
-                     "id": "70795801",
-                     "premium": false,
-                     "name": "Backend-разработчик (Node.js)",
-                     "department": null,
-                     "has_test": false,
-                     "response_letter_required": false,
-                     "area": {
-                            "id": "1",
-                            "name": "Москва",
-                            "url": "https://api.hh.ru/areas/1"
-                     },
-                     "salary": {
-                            "from": 150000,
-                            "to": null,
-                            "currency": "RUR",
-                            "gross": false
-                     },
-                     "type": {
-                            "id": "open",
-                            "name": "Открытая"
-                     },
-                     "address": null,
-                     "response_url": null,
-                     "sort_point_distance": null,
-                     "published_at": "2022-11-07T11:21:06+0300",
-                     "created_at": "2022-11-07T11:21:06+0300",
-                     "archived": false,
-                     "apply_alternate_url": "https://hh.ru/applicant/vacancy_response?vacancyId=70795801",
-                     "insider_interview": null,
-                     "url": "https://api.hh.ru/vacancies/70795801?host=hh.ru",
-                     "adv_response_url": "https://api.hh.ru/vacancies/70795801/adv_response?host=hh.ru",
-                     "alternate_url": "https://hh.ru/vacancy/70795801",
-                     "relations": [],
-                     "employer": {
-                            "id": "3361389",
-                            "name": "WAZZUP",
-                            "url": "https://api.hh.ru/employers/3361389",
-                            "alternate_url": "https://hh.ru/employer/3361389",
-                            "logo_urls": {
-                                   "90": "https://hhcdn.ru/employer-logo/3384789.jpeg",
-                                   "240": "https://hhcdn.ru/employer-logo/3384790.jpeg",
-                                   "original": "https://hhcdn.ru/employer-logo-original/735953.jpg"
-                            },
-                            "vacancies_url": "https://api.hh.ru/vacancies?employer_id=3361389",
-                            "trusted": true
-                     },
-                     "snippet": {
-                            "requirement": "Опыт разработки на Node.js в коммерческих проектах на релевантном стеке. Желание работать в команде, фуллтайм. Умение следовать паттернам, выделять абстракции. ",
-                            "responsibility": "Сложная бизнес-логика взаимодействия сервиса и CRM. Мудреная инфраструктура: кластер Kubernetes, связанный со стором в Яндекс.Облако, а некоторые сервисы — в..."
-                     },
-                     "contacts": null,
-                     "schedule": {
-                            "id": "remote",
-                            "name": "Удаленная работа"
-                     },
-                     "working_days": [],
-                     "working_time_intervals": [],
-                     "working_time_modes": [],
-                     "accept_temporary": false
               }
        ],
-       "found": 2418,
-       "pages": 100,
+       "found": 824,
+       "pages": 42,
        "per_page": 20,
        "page": 0,
        "clusters": null,
        "arguments": null,
-       "alternate_url": "https://hh.ru/search/vacancy?area=1&control_flag=vacancyBlacklistJoinEnabled%3ATrue&control_flag=ratesBoostEnabled%3ATrue&control_flag=ratesBoostFactor%3A1e-05&control_flag=ratesBoostRealCoef%3A1.0&control_flag=ratesBoostPredCoef%3A1.0&control_flag=ratesThreshold%3A0.01&control_flag=responsesThreshold%3A9&enable_snippets=true&search_period=30&text=%D0%9F%D1%80%D0%BE%D0%B3%D1%80%D0%B0%D0%BC%D0%BC%D0%B8%D1%81%D1%82+JavaScript"
+       "alternate_url": "https://hh.ru/search/vacancy?area=1&control_flag=vacancyBlacklistJoinEnabled%3ATrue&control_flag=ratesBoostEnabled%3ATrue&control_flag=ratesBoostFactor%3A1e-05&control_flag=ratesBoostRealCoef%3A1.0&control_flag=ratesBoostPredCoef%3A1.0&control_flag=ratesThreshold%3A0.01&control_flag=responsesThreshold%3A9&enable_snippets=true&only_with_salary=true&search_period=30&text=%D0%9F%D1%80%D0%BE%D0%B3%D1%80%D0%B0%D0%BC%D0%BC%D0%B8%D1%81%D1%82+JavaScript"
 }

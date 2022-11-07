@@ -8,6 +8,26 @@ import requests
 BASE_URL = 'https://api.hh.ru'
 
 
+def predict_rub_salary(vacancy):
+    if vacancy['currency'] == 'RUR':
+        if vacancy['from'] and vacancy['to']:
+            average_salary = int((vacancy['from'] + vacancy['to'])/2)
+
+            return average_salary
+
+        if vacancy['from'] and not vacancy['to']:
+            average_salary = int(vacancy['from'] * 1.2)
+
+            return average_salary
+
+        if not vacancy['from'] and vacancy['to']:
+            average_salary = int(vacancy['to'] * 0.8)
+
+            return average_salary
+
+    return None
+
+
 def main():
     work = 'vacancies'
 
@@ -34,7 +54,8 @@ def main():
         payload = {
             'text': vacancy,
             'area': '1',
-            'period': '30'
+            'period': '30',
+            'only_with_salary': True,
         }
 
         response = requests.get(url, params=payload)
@@ -47,6 +68,7 @@ def main():
         if language == 'Python':
             for i in x['items']:
                 print(i['salary'])
+                print(predict_rub_salary(i['salary']))
 
     print(found_vacancys)
 
