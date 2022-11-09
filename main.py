@@ -150,20 +150,20 @@ def get_response(url: str, payload: dict=None, headers: dict=None) -> requests:
     return response
 
 
-# def make_table(salary_statistics, title):
-#     column_names = [
-#         ['Язык программирования', 'Вакансий найдено', 'Вакансий обработано', 'Средняя зарплата']
-#     ]
-#     for language, statistics in salary_statistics.items():
-#         column_content = [
-#             language, statistics['vacancies_found'],
-#             statistics['vacancies_processed'], statistics['average_salary']
-#         ]
-#         column_names.append(column_content)
+def make_table(salary_statistics, title):
+    column_names = [
+        ['Язык программирования', 'Вакансий найдено', 'Вакансий обработано', 'Средняя зарплата']
+    ]
+    for language, statistics in salary_statistics.items():
+        column_content = [
+            language, statistics['vacancies_found'],
+            statistics['vacancies_processed'], statistics['average_salary']
+        ]
+        column_names.append(column_content)
     
-#     table_instance = AsciiTable(column_names, title)
+    table_instance = AsciiTable(column_names, title)
 
-#     return table_instance.table
+    return table_instance.table
 
 
 def main():
@@ -185,8 +185,8 @@ def main():
     sj_title = 'SuperJob Moscow'
     hh_title = 'HeadHunter Moscow'
 
-    # print(make_table(hh_salary_statistics, hh_title))
-    # print(make_table(sj_salary_statistics, sj_title))
+    print(make_table(hh_salary_statistics, hh_title))
+    print(make_table(sj_salary_statistics, sj_title))
 
 if __name__ == '__main__':
     main()
