@@ -1,4 +1,6 @@
 import os
+import logging
+import time
 
 from urllib.parse import urljoin
 
@@ -24,26 +26,6 @@ POPULAR_PROGRAMMING_LANGUAGES = [
     ]
 
 
-def predict_rub_salary_hh(vacancy) -> None|int:
-    if vacancy['currency'] == 'RUR':
-        if vacancy['from'] and vacancy['to']:
-            average_salary = int((vacancy['from'] + vacancy['to'])/2)
-
-            return average_salary
-
-        if vacancy['from'] and not vacancy['to']:
-            average_salary = int(vacancy['from'] * 1.2)
-
-            return average_salary
-
-        if not vacancy['from'] and vacancy['to']:
-            average_salary = int(vacancy['to'] * 0.8)
-
-            return average_salary
-
-    return None
-
-
 def get_hh_salary_statistics(vacancy: str, url: str) -> dict:
     payload = {
             'text': vacancy,
@@ -53,27 +35,34 @@ def get_hh_salary_statistics(vacancy: str, url: str) -> dict:
             'per_page': 100,
         }
 
-    response = get_response(url, payload)
-    response = response.json()
+    response = requests.get(url, params=payload)
+    response.raise_for_status()
 
     average_salary = 0
     vacancies_processed = 0
 
-    pages = response['pages']
+    pages = response.json()['pages']
+    vacancies_found = response.json()['found']
 
     for page in range(pages):
         payload['page'] = page
 
-        response = get_response(url, payload)
-        response = response.json()
+        response = requests.get(url, params=payload)
+        response.raise_for_status()
+        vacancies = response.json()['items']
     
-        for item in response['items']:
-            if predict_rub_salary_hh(item['salary']):
-                average_salary += predict_rub_salary_hh(item['salary'])
+        for vacancy in vacancies:
+            salary_vacancy = vacancy['salary']
+            payment_from = salary_vacancy['from']
+            payment_to = salary_vacancy['to']
+
+            currency_flag = salary_vacancy['currency'] == 'RUR'
+            none_flag = predict_rub_salary(payment_from, payment_to)
+            if currency_flag and none_flag:
+                average_salary += predict_rub_salary(payment_from, payment_to)
                 vacancies_processed += 1
     
     average_salary = int(average_salary / vacancies_processed)
-    vacancies_found = response['found']
 
     language_statistics = {
             "vacancies_found": vacancies_found,
@@ -84,26 +73,7 @@ def get_hh_salary_statistics(vacancy: str, url: str) -> dict:
     return language_statistics
 
 
-def predict_rub_salary_sj(vacancy):
-    if vacancy['payment_from'] and vacancy['payment_to']:
-        average_salary = int((vacancy['payment_from'] + vacancy['payment_to'])/2)
-
-        return average_salary
-
-    if vacancy['payment_from'] and not vacancy['payment_to']:
-        average_salary = int(vacancy['payment_from'] * 1.2)
-
-        return average_salary
-
-    if not vacancy['payment_from'] and vacancy['payment_to']:
-        average_salary = int(vacancy['payment_to'] * 0.8)
-
-        return average_salary
-
-    return None
-
-
-def get_sj_salary_statistics(vacancy: str, url: str) -> dict:
+def get_sj_salary_statistics(vacancy: str, url: str, token: str) -> dict:
     payload = {
         'town': 'Москва',
         'keyword': vacancy,
@@ -111,48 +81,62 @@ def get_sj_salary_statistics(vacancy: str, url: str) -> dict:
         "currency": "rub",
         'count': 100
     }
-    token = os.environ['SJ_TOKEN']
     headers = {
         'X-Api-App-Id': token,
     }
 
-    response = get_response(url, payload, headers)
-    response = response.json()
+    response = requests.get(url, params=payload, headers=headers)
+    response.raise_for_status()
+
+    vacancies = response.json()['objects']
 
     average_salary = 0
     vacancies_processed = 0
 
-    vacancies_found = response['total']
+    vacancies_found = response.json()['total']
 
-    response = get_response(url, payload, headers)
-    response = response.json()
+    for vacancy in vacancies:
+        payment_from = vacancy['payment_from']
+        payment_to = vacancy['payment_to']
 
-    for item in response['objects']:
-        if predict_rub_salary_sj(item):
-            average_salary += predict_rub_salary_sj(item)
+        if predict_rub_salary(payment_from, payment_to):
+            average_salary += predict_rub_salary(payment_from, payment_to)
             vacancies_processed += 1
-    
+
     average_salary = int(average_salary / vacancies_processed)
 
     language_statistics = {
-            "vacancies_found": vacancies_found,
-            "vacancies_processed": vacancies_processed,
-            "average_salary": average_salary,
-        }
+        "vacancies_found": vacancies_found,
+        "vacancies_processed": vacancies_processed,
+        "average_salary": average_salary,
+    }
 
     return language_statistics
 
 
-def get_response(url: str, payload: dict=None, headers: dict=None) -> requests:
-    response = requests.get(url, params=payload, headers=headers)
-    response.raise_for_status()
+def predict_rub_salary(payment_from, payment_to) -> None|int:
+    if payment_from and payment_to:
+        average_salary = int((payment_from + payment_to)/2)
 
-    return response
+        return average_salary
+
+    if payment_from and not payment_to:
+        average_salary = int(payment_from * 1.2)
+
+        return average_salary
+
+    if not payment_from and payment_to:
+        average_salary = int(payment_to * 0.8)
+
+        return average_salary
+
+    return None
 
 
 def make_table(salary_statistics, title):
     column_names = [
-        ['Язык программирования', 'Вакансий найдено', 'Вакансий обработано', 'Средняя зарплата']
+        ['Язык программирования', 'Вакансий найдено',
+        'Вакансий обработано', 'Средняя зарплата']
     ]
     for language, statistics in salary_statistics.items():
         column_content = [
@@ -167,20 +151,34 @@ def make_table(salary_statistics, title):
 
 
 def main():
-    method = 'vacancies'
+    api_method = 'vacancies'
 
-    hh_url = urljoin(HH_URL, method)
-    sj_url = urljoin(SP_URL, method)
+    hh_url = urljoin(HH_URL, api_method)
+    sj_url = urljoin(SP_URL, api_method)
 
     load_dotenv()
+    token = os.environ['SJ_TOKEN']
 
     hh_salary_statistics = dict()
     sj_salary_statistics = dict()
 
     for language in POPULAR_PROGRAMMING_LANGUAGES:
         vacancy = f'Программист {language}'
-        hh_salary_statistics[language] = get_hh_salary_statistics(vacancy, hh_url)
-        sj_salary_statistics[language] = get_sj_salary_statistics(vacancy, sj_url)
+
+        try:
+            hh_salary = get_hh_salary_statistics(vacancy, hh_url)
+            sj_salary = get_sj_salary_statistics(vacancy, sj_url, token)
+
+        except requests.exceptions.HTTPError as errh:
+            logging.error(errh, exc_info=True)
+
+        except requests.exceptions.ConnectionError as errc:
+            logging.error(errc, exc_info=True)
+            time.sleep(2)
+            continue
+
+        hh_salary_statistics[language] = hh_salary
+        sj_salary_statistics[language] = sj_salary
 
     sj_title = 'SuperJob Moscow'
     hh_title = 'HeadHunter Moscow'
