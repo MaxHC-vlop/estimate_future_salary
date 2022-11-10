@@ -111,7 +111,7 @@ def get_sj_salary_statistics(vacancy: str, url: str) -> dict:
         "currency": "rub",
         'count': 100
     }
-    token = os.environ['SUPER_JOB_API']
+    token = os.environ['SJ_TOKEN']
     headers = {
         'X-Api-App-Id': token,
     }
