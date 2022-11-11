@@ -32,22 +32,13 @@ def get_hh_salary_statistics(vacancy: str, url: str, period_placement: int) -> d
             'period': period_placement,
             'only_with_salary': True,
             'per_page': 100,
+            'page': 0
         }
-
-    response = requests.get(url, params=payload)
-    response.raise_for_status()
 
     average_salary = 0
     vacancies_processed = 0
 
-    response_content = response.json()
-
-    pages = response_content['pages']
-    vacancies_found = response_content['found']
-
-    for page in range(pages):
-        payload['page'] = page
-
+    while True:
         response = requests.get(url, params=payload)
         response.raise_for_status()
 
@@ -65,6 +56,15 @@ def get_hh_salary_statistics(vacancy: str, url: str, period_placement: int) -> d
             if currency_flag and none_flag:
                 average_salary += predict_rub_salary(payment_from, payment_to)
                 vacancies_processed += 1
+
+        payload['page'] += 1
+
+        pages_flag = payload['page'] == response_content['pages']
+
+        if pages_flag:
+            vacancies_found = response_content['found']
+
+            break
     
     average_salary = int(average_salary / vacancies_processed)
 
