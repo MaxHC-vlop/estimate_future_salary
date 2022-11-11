@@ -10,8 +10,8 @@ from dotenv import load_dotenv
 from terminaltables import AsciiTable
 
 
-HH_URL = 'https://api.hh.ru'
-SP_URL = 'https://api.superjob.ru/2.0/'
+HH_URL = 'https://api.hh.ru/vacancies'
+SP_URL = 'https://api.superjob.ru/2.0/vacancies'
 
 POPULAR_PROGRAMMING_LANGUAGES = [
         'Go',
@@ -151,10 +151,8 @@ def make_table(salary_statistics, title):
 
 
 def main():
-    api_method = 'vacancies'
-
-    hh_url = urljoin(HH_URL, api_method)
-    sj_url = urljoin(SP_URL, api_method)
+    hh_url = HH_URL
+    sj_url = SP_URL
 
     load_dotenv()
     token = os.environ['SJ_TOKEN']
