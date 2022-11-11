@@ -52,9 +52,10 @@ def get_hh_salary_statistics(vacancy: str, url: str, period_placement: int) -> d
             payment_to = salary_vacancy['to']
 
             currency_flag = salary_vacancy['currency'] == 'RUR'
-            none_flag = predict_rub_salary(payment_from, payment_to)
-            if currency_flag and none_flag:
-                average_salary += predict_rub_salary(payment_from, payment_to)
+            salary = predict_rub_salary(payment_from, payment_to)
+
+            if currency_flag and salary:
+                average_salary += salary
                 vacancies_processed += 1
 
         payload['page'] += 1
@@ -105,8 +106,10 @@ def get_sj_salary_statistics(vacancy: str, url: str, token: str, period_placemen
         payment_from = vacancy['payment_from']
         payment_to = vacancy['payment_to']
 
-        if predict_rub_salary(payment_from, payment_to):
-            average_salary += predict_rub_salary(payment_from, payment_to)
+        salary = predict_rub_salary(payment_from, payment_to)
+
+        if salary:
+            average_salary += salary
             vacancies_processed += 1
 
     average_salary = int(average_salary / vacancies_processed)
