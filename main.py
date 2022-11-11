@@ -40,15 +40,20 @@ def get_hh_salary_statistics(vacancy: str, url: str, period_placement: int) -> d
     average_salary = 0
     vacancies_processed = 0
 
-    pages = response.json()['pages']
-    vacancies_found = response.json()['found']
+    response_content = response.json()
+
+    pages = response_content['pages']
+    vacancies_found = response_content['found']
 
     for page in range(pages):
         payload['page'] = page
 
         response = requests.get(url, params=payload)
         response.raise_for_status()
-        vacancies = response.json()['items']
+
+        response_content = response.json()
+
+        vacancies = response_content['items']
     
         for vacancy in vacancies:
             salary_vacancy = vacancy['salary']
@@ -87,12 +92,14 @@ def get_sj_salary_statistics(vacancy: str, url: str, token: str, period_placemen
     response = requests.get(url, params=payload, headers=headers)
     response.raise_for_status()
 
-    vacancies = response.json()['objects']
+    response = response.json()
+
+    vacancies = response['objects']
 
     average_salary = 0
     vacancies_processed = 0
 
-    vacancies_found = response.json()['total']
+    vacancies_found = response['total']
 
     for vacancy in vacancies:
         payment_from = vacancy['payment_from']
