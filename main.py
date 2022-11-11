@@ -167,11 +167,11 @@ def main():
     sj_salary_statistics = dict()
 
     for language in POPULAR_PROGRAMMING_LANGUAGES:
-        vacancy = f'Программист {language}'
+        vacancy_name = f'Программист {language}'
 
         try:
-            hh_salary = get_hh_salary_statistics(vacancy, HH_URL, PERIOD_PLACEMENT)
-            sj_salary = get_sj_salary_statistics(vacancy, SP_URL, token, PERIOD_PLACEMENT)
+            hh_salary = get_hh_salary_statistics(vacancy_name, HH_URL, PERIOD_PLACEMENT)
+            sj_salary = get_sj_salary_statistics(vacancy_name, SP_URL, token, PERIOD_PLACEMENT)
 
         except requests.exceptions.HTTPError as errh:
             logging.error(errh, exc_info=True)
