@@ -181,6 +181,9 @@ def main():
             time.sleep(2)
             continue
 
+        except ZeroDivisionError as errz:
+            logging.error(errz, exc_info=True)
+
         hh_salary_statistics[language] = hh_salary
         sj_salary_statistics[language] = sj_salary
 
