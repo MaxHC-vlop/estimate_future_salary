@@ -2,8 +2,6 @@ import os
 import logging
 import time
 
-from urllib.parse import urljoin
-
 import requests
 
 from dotenv import load_dotenv
@@ -12,6 +10,7 @@ from terminaltables import AsciiTable
 
 HH_URL = 'https://api.hh.ru/vacancies'
 SP_URL = 'https://api.superjob.ru/2.0/vacancies'
+PERIOD_PLACEMENT = 30
 
 POPULAR_PROGRAMMING_LANGUAGES = [
         'Go',
@@ -26,11 +25,11 @@ POPULAR_PROGRAMMING_LANGUAGES = [
     ]
 
 
-def get_hh_salary_statistics(vacancy: str, url: str) -> dict:
+def get_hh_salary_statistics(vacancy: str, url: str, period_placement: int) -> dict:
     payload = {
             'text': vacancy,
             'area': '1',
-            'period': '30',
+            'period': period_placement,
             'only_with_salary': True,
             'per_page': 100,
         }
@@ -73,12 +72,12 @@ def get_hh_salary_statistics(vacancy: str, url: str) -> dict:
     return language_statistics
 
 
-def get_sj_salary_statistics(vacancy: str, url: str, token: str) -> dict:
+def get_sj_salary_statistics(vacancy: str, url: str, token: str, period_placement: int) -> dict:
     payload = {
         'town': 'Москва',
         'keyword': vacancy,
-        'period': '30',
-        "currency": "rub",
+        'period': period_placement,
+        'currency': 'rub',
         'count': 100
     }
     headers = {
@@ -151,9 +150,6 @@ def make_table(salary_statistics, title):
 
 
 def main():
-    hh_url = HH_URL
-    sj_url = SP_URL
-
     load_dotenv()
     token = os.environ['SJ_TOKEN']
 
@@ -164,8 +160,8 @@ def main():
         vacancy = f'Программист {language}'
 
         try:
-            hh_salary = get_hh_salary_statistics(vacancy, hh_url)
-            sj_salary = get_sj_salary_statistics(vacancy, sj_url, token)
+            hh_salary = get_hh_salary_statistics(vacancy, HH_URL, PERIOD_PLACEMENT)
+            sj_salary = get_sj_salary_statistics(vacancy, SP_URL, token, PERIOD_PLACEMENT)
 
         except requests.exceptions.HTTPError as errh:
             logging.error(errh, exc_info=True)
