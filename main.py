@@ -95,14 +95,14 @@ def get_sj_salary_statistics(vacancy: str, url: str, token: str, period_placemen
     response = requests.get(url, params=payload, headers=headers)
     response.raise_for_status()
 
-    response = response.json()
+    response_content = response.json()
 
-    vacancies = response['objects']
+    vacancies = response_content['objects']
 
     average_salary = 0
     vacancies_processed = 0
 
-    vacancies_found = response['total']
+    vacancies_found = response_content['total']
 
     for vacancy in vacancies:
         payment_from = vacancy['payment_from']
