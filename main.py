@@ -26,9 +26,10 @@ POPULAR_PROGRAMMING_LANGUAGES = [
 
 
 def get_hh_salary_statistics(vacancy: str, url: str, period_placement: int) -> dict:
+    city_id = 1
     payload = {
             'text': vacancy,
-            'area': '1',
+            'area': city_id,
             'period': period_placement,
             'only_with_salary': True,
             'per_page': 100,
