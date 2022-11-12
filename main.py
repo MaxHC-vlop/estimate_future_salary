@@ -140,8 +140,6 @@ def predict_rub_salary(payment_from, payment_to) -> None|int:
 
         return average_salary
 
-    return None
-
 
 def make_table(salary_statistics, title):
     column_names = [
