@@ -67,8 +67,9 @@ def get_hh_salary_statistics(vacancy: str, url: str, period_placement: int) -> d
             vacancies_found = response_content['found']
 
             break
-    
-    average_salary = int(average_salary / vacancies_processed)
+
+    if vacancies_processed:
+        average_salary = int(average_salary / vacancies_processed)
 
     language_statistics = {
             "vacancies_found": vacancies_found,
@@ -113,7 +114,8 @@ def get_sj_salary_statistics(vacancy: str, url: str, token: str, period_placemen
             average_salary += salary
             vacancies_processed += 1
 
-    average_salary = int(average_salary / vacancies_processed)
+    if vacancies_processed:
+        average_salary = int(average_salary / vacancies_processed)
 
     language_statistics = {
         "vacancies_found": vacancies_found,
@@ -179,9 +181,6 @@ def main():
             logging.error(errc, exc_info=True)
             time.sleep(2)
             continue
-
-        except ZeroDivisionError as errz:
-            logging.error(errz, exc_info=True)
 
         hh_salary_statistics[language] = hh_salary
         sj_salary_statistics[language] = sj_salary
